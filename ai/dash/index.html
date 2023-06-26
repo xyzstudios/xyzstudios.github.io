@@ -7,7 +7,7 @@
     <h1>My Discord Guilds</h1>
 
     <!-- Add the Discord login button -->
-    <a href="https://discord.com/api/oauth2/authorize?client_id=1080222631577526405&permissions=8&redirect_uri=https%3A%2F%2Fxyzstudios.github.io%2Fai%2Fdashboard%2Foauth2%2Fsuccess%2F&response_type=code&scope=guilds%20messages.read%20applications.commands%20voice%20dm_channels.read%20bot%20connections%20guilds.members.read">Login with Discord</a>
+    <a href="https://discord.com/api/oauth2/authorize?client_id=1080222631577526405&redirect_uri=https%3A%2F%2Fxyzstudios.github.io%2Fai%2Fdashboard%2Foauth2%2Fsuccess%2F&response_type=code&scope=guilds">Login with Discord</a>
 
     <h2>Guilds:</h2>
     <ul id="guildList"></ul>
@@ -45,7 +45,7 @@
             var code = params.get('code');
 
             // Make a POST request to exchange the authorization code for an access token
-            makeRequest('POST', 'https://discord.com/api/oauth2/token?grant_type=authorization_code&code=' + code + '&redirect_uri=YOUR_REDIRECT_URI&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET', function(response) {
+            makeRequest('POST', 'https://discord.com/api/oauth2/token?grant_type=authorization_code&code=' + code + '&redirect_uri=https%3A%2F%2Fxyzstudios.github.io%2Fai%2Fdash%2F&client_id=1080222631577526405&client_secret=bKaAElsesVwmJ5maQba2dKZOn5h8ctjL', function(response) {
                 var accessToken = response.access_token;
 
                 // Fetch guilds using the access token
