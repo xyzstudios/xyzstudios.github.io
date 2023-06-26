@@ -1,7 +1,62 @@
+<!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-        <h1>Dashboard</h1>
-    </body>
+<head>
+    <title>My Discord Guilds</title>
+</head>
+<body>
+    <h1>My Discord Guilds</h1>
+
+    <!-- Add the Discord login button -->
+    <a href="https://discord.com/api/oauth2/authorize?client_id=1080222631577526405&permissions=8&redirect_uri=https%3A%2F%2Fxyzstudios.github.io%2Fai%2Fdashboard%2Foauth2%2Fsuccess%2F&response_type=code&scope=guilds%20messages.read%20applications.commands%20voice%20dm_channels.read%20bot%20connections%20guilds.members.read">Login with Discord</a>
+
+    <h2>Guilds:</h2>
+    <ul id="guildList"></ul>
+
+    <script>
+        // Function to make a GET request to Discord API
+        function makeRequest(method, url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    callback(JSON.parse(xhr.responseText));
+                }
+            };
+            xhr.send();
+        }
+
+        // Function to fetch guilds for the authenticated user
+        function fetchGuilds(accessToken) {
+            makeRequest('GET', 'https://discord.com/api/users/@me/guilds', function(response) {
+                var guildList = document.getElementById('guildList');
+                guildList.innerHTML = '';
+
+                response.forEach(function(guild) {
+                    var li = document.createElement('li');
+                    li.textContent = guild.name;
+                    guildList.appendChild(li);
+                });
+            });
+        }
+
+        // Function to handle the Discord OAuth2 callback
+        function handleAuthCallback() {
+            var params = new URLSearchParams(window.location.search);
+            var code = params.get('code');
+
+            // Make a POST request to exchange the authorization code for an access token
+            makeRequest('POST', 'https://discord.com/api/oauth2/token?grant_type=authorization_code&code=' + code + '&redirect_uri=YOUR_REDIRECT_URI&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET', function(response) {
+                var accessToken = response.access_token;
+
+                // Fetch guilds using the access token
+                fetchGuilds(accessToken);
+            });
+        }
+
+        // Check if the URL has an authorization code
+        if (window.location.search.includes('code')) {
+            handleAuthCallback();
+        }
+    </script>
+</body>
 </html>
